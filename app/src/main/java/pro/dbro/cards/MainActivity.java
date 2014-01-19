@@ -10,8 +10,9 @@ import android.view.MenuItem;
 import java.util.ArrayList;
 
 import pro.dbro.cards.model.Card;
+import pro.dbro.cards.model.Game;
 
-public class MainActivity extends FragmentActivity implements HandFragment.HandFragmentListener, CardFragment.CardFragmentListener {
+public class MainActivity extends FragmentActivity implements HandFragment.HandFragmentListener, CardFragment.CardFragmentListener, GameFragment.GameFragmentListener {
     private static final String TAG = "MainActivity";
 
     @Override
@@ -19,15 +20,25 @@ public class MainActivity extends FragmentActivity implements HandFragment.HandF
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ArrayList<Card> cards = new ArrayList<Card>();
-        cards.add(new Card("Reya Dawnbringer", "https://www.wizards.com/magic/images/tournamentcenter/2007/gameday_reya.jpg"));
-        cards.add(new Card("Capricious Effect", "http://www.wizards.com/mtg/images/daily/ld/ld29_efreet.jpg"));
+        ArrayList<Card> hand = new ArrayList<Card>();
+        hand.add(new Card("Reya Dawnbringer", "https://www.wizards.com/magic/images/tournamentcenter/2007/gameday_reya.jpg"));
+        hand.add(new Card("Capricious Effect", "http://www.wizards.com/mtg/images/daily/ld/ld29_efreet.jpg"));
+
+        ArrayList<Card> table = new ArrayList<Card>();
+        table.add(new Card("Illusory Thoughts", "http://media.wizards.com/images/magic/daily/arcana/491_ds1_jkvgpw3ent.jpg"));
+        table.add(new Card("Distract", "http://media.wizards.com/images/magic/daily/arcana/491_ds3_jkvgpw3ent.jpg"));
+
+        ArrayList<Card> opponentTable = new ArrayList<Card>();
+        opponentTable.add(new Card("Black Knight", "http://www.wizards.com/mtg/images/daily/features/27a_blackKnight_0ni7n.jpg"));
+        opponentTable.add(new Card("Hoard-Smelter Dragon", "http://media.wizards.com/images/magic/tcg/products/scarsofmirrodin/ciyqwjmm5c_en.jpg"));
+
+        Game game = new Game(table, hand, opponentTable);
 
         if (savedInstanceState == null) {
-            getFragmentManager().beginTransaction()
-                    .add(R.id.container, HandFragment.newInstance(cards))
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.container, GameFragment.newInstance(game))
                     .commit();
-            Log.i(TAG, "Added HandFragment");
+            Log.i(TAG, "Added GameFragment");
         }
 
     }

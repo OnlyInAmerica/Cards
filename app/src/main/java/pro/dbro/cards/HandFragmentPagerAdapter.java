@@ -12,12 +12,12 @@ import pro.dbro.cards.model.Card;
 /**
  * Created by davidbrodsky on 1/18/14.
  */
-public class CardFragmentPagerAdapter extends FragmentPagerAdapter {
-    private static final String TAG = "CardFragmentPagerAdapter";
+public class HandFragmentPagerAdapter extends FragmentPagerAdapter {
+    private static final String TAG = "HandFragmentPagerAdapter";
 
     private ArrayList<Card> mCards;
 
-    public CardFragmentPagerAdapter(FragmentManager fm, ArrayList<Card> cards){
+    public HandFragmentPagerAdapter(FragmentManager fm, ArrayList<Card> cards){
         super(fm);
         mCards = cards;
     }

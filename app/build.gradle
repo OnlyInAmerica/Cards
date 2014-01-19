@@ -19,6 +19,7 @@ android {
 }
 
 dependencies {
+    //compile 'com.github.castorflex.verticalviewpager:library:19.0.0'
     compile 'com.android.support:support-v4:18.0.+'
     compile fileTree(dir: 'libs', include: '*.jar')
 }

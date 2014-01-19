@@ -10,38 +10,44 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
+import fr.castorflex.android.verticalviewpager.VerticalViewPager;
+import pro.dbro.cards.model.Game;
 
-import pro.dbro.cards.model.Card;
 
+/**
+ * A simple {@link android.support.v4.app.Fragment} subclass.
+ * Activities that contain this fragment must implement the
+ * {@link pro.dbro.cards.GameFragment.GameFragmentListener} interface
+ * to handle interaction events.
+ * Use the {@link GameFragment#newInstance} factory method to
+ * create an instance of this fragment.
+ *
+ */
+public class GameFragment extends Fragment {
+    private static final String TAG = "GameFragment";
+    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    private static final String ARG_GAME = "game";
 
-public class HandFragment extends Fragment {
-    private static final String TAG = "HandFragment";
+    private GameFragmentPagerAdapter mAdapter;
+    private VerticalViewPager mViewPager;
+    private Game mGame;
 
-    private static final String ARG_CARDS = "cards";
-
-    private HandFragmentPagerAdapter mAdapter;
-    private ViewPager mViewPager;
-    private ArrayList<Card> mCards;
-
-    private HandFragmentListener mListener;
+    private GameFragmentListener mListener;
 
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param cards Parameter 1.
-     * @return A new instance of fragment HandFragment.
+     * @return A new instance of fragment GameFragment.
      */
-    public static HandFragment newInstance(ArrayList<Card> cards) {
-        HandFragment fragment = new HandFragment();
+    public static GameFragment newInstance(Game game) {
+        GameFragment fragment = new GameFragment();
         Bundle args = new Bundle();
-        args.putParcelableArrayList(ARG_CARDS, cards);
+        args.putParcelable(ARG_GAME, game);
         fragment.setArguments(args);
         return fragment;
     }
-
-    public HandFragment() {
+    public GameFragment() {
         // Required empty public constructor
     }
 
@@ -49,24 +55,33 @@ public class HandFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mCards = getArguments().getParcelableArrayList(ARG_CARDS);
-            Log.i(TAG, "Got Cards onCreate " + mCards.size());
+            mGame = getArguments().getParcelable(ARG_GAME);
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-        ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_hand, container, false);
-        mViewPager = (ViewPager) root.findViewById(R.id.pager);
-        mAdapter = new HandFragmentPagerAdapter((this.getActivity()).getSupportFragmentManager(), mCards);
+        ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_game, container, false);
+        mViewPager = (VerticalViewPager) root.findViewById(R.id.verticalviewpager);
+        mAdapter = new GameFragmentPagerAdapter(this.getActivity().getSupportFragmentManager(), mGame);
         mViewPager.setAdapter(mAdapter);
-        Log.i(TAG, "onCreateView for Cards " + mCards.toString());
-        // Old Custom ViewPager way:
-        //mAdapter = new CardPagerAdapter(getActivity().getApplicationContext(), mViewPager, mCards);
+        mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int i, float v, int i2) {
 
+            }
 
+            @Override
+            public void onPageSelected(int i) {
+                //Log.i(TAG, "Page selected: " + i);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int i) {
+
+            }
+        });
         return root;
     }
 
@@ -81,10 +96,10 @@ public class HandFragment extends Fragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            mListener = (HandFragmentListener) activity;
+            mListener = (GameFragmentListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
-                    + " must implement HandFragmentListener");
+                    + " must implement GameFragmentListener");
         }
     }
 
@@ -104,7 +119,7 @@ public class HandFragment extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface HandFragmentListener {
+    public interface GameFragmentListener {
         // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);
     }

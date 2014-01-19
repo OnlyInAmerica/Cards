@@ -52,4 +52,8 @@ public class Card implements Parcelable {
             return new Card[size];
         }
     };
+
+    public String toString(){
+        return mName;
+    }
 }
