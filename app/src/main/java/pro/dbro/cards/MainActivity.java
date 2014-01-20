@@ -2,10 +2,16 @@ package pro.dbro.cards;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
 
 import java.util.ArrayList;
 
@@ -15,10 +21,24 @@ import pro.dbro.cards.model.Game;
 public class MainActivity extends FragmentActivity implements HandFragment.HandFragmentListener, CardFragment.CardFragmentListener, GameFragment.GameFragmentListener {
     private static final String TAG = "MainActivity";
 
+    private String[] mDrawerItems;
+    private DrawerLayout mDrawerLayout;
+    private ListView mDrawerList;
+
+    Game mGame;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mDrawerItems = getResources().getStringArray(R.array.drawer_items);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerList = (ListView) findViewById(R.id.left_drawer);
+
+        // Set the adapter for the list view
+        mDrawerList.setAdapter(new DrawerItemAdapter(this, mDrawerItems));
+        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
         ArrayList<Card> hand = new ArrayList<Card>();
         hand.add(new Card("Reya Dawnbringer", "https://www.wizards.com/magic/images/tournamentcenter/2007/gameday_reya.jpg"));
@@ -32,14 +52,16 @@ public class MainActivity extends FragmentActivity implements HandFragment.HandF
         opponentTable.add(new Card("Black Knight", "http://www.wizards.com/mtg/images/daily/features/27a_blackKnight_0ni7n.jpg"));
         opponentTable.add(new Card("Hoard-Smelter Dragon", "http://media.wizards.com/images/magic/tcg/products/scarsofmirrodin/ciyqwjmm5c_en.jpg"));
 
-        Game game = new Game(table, hand, opponentTable);
+        mGame = new Game(table, hand, opponentTable);
+
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, GameFragment.newInstance(game))
+                    .add(R.id.content_frame, GameFragment.newInstance(mGame), "gameFragment")
                     .commit();
             Log.i(TAG, "Added GameFragment");
         }
+
 
     }
 
@@ -67,5 +89,24 @@ public class MainActivity extends FragmentActivity implements HandFragment.HandF
     @Override
     public void onFragmentInteraction(Uri uri) {
         Log.i(TAG, "onFragmentInteraction " + uri.toString());
+    }
+
+
+    private class DrawerItemClickListener implements ListView.OnItemClickListener {
+        @Override
+        public void onItemClick(AdapterView parent, View view, int position, long id) {
+            navigateToDrawerSelection(position);
+        }
+    }
+
+    private void navigateToDrawerSelection(int position) {
+        // Create a new fragment and specify the planet to show based on position
+        Fragment fragment = null;
+        Log.i(TAG, "position " + position);
+
+        ((GameFragment) getSupportFragmentManager().findFragmentByTag("gameFragment")).setDisplayedView(position);
+        // Highlight the selected item, update the title, and close the drawer
+        mDrawerList.setItemChecked(position, true);
+        mDrawerLayout.closeDrawer(mDrawerList);
     }
 }

@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.android.volley.toolbox.NetworkImageView;
 
@@ -64,6 +65,7 @@ public class CardPagerAdapter extends PagerAdapter implements ViewPager.OnPageCh
         }
         */
         cardView =  mInflater.inflate(R.layout.card, container);
+        ((TextView) cardView.findViewById(R.id.title)).setText(card.getName());
         ((NetworkImageView) cardView.findViewById(R.id.image)).setImageUrl(card.getUrl(), Network.getImageLoader(mContext));
         return cardView;
     }
