@@ -60,7 +60,7 @@ public class HandFragment extends Fragment {
 
         ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_hand, container, false);
         mViewPager = (ViewPager) root.findViewById(R.id.pager);
-        mAdapter = new HandFragmentPagerAdapter((this.getActivity()).getSupportFragmentManager(), mCards);
+        mAdapter = new HandFragmentPagerAdapter(getChildFragmentManager(), mCards);
         mViewPager.setAdapter(mAdapter);
         Log.i(TAG, "onCreateView for Cards " + mCards.toString());
         // Old Custom ViewPager way:
