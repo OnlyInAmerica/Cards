@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -20,6 +21,7 @@ public class HandFragment extends Fragment {
 
     private static final String ARG_CARDS = "cards";
 
+    //private CardPagerAdapter mAdapter;
     private HandFragmentPagerAdapter mAdapter;
     private ViewPager mViewPager;
     private ArrayList<Card> mCards;
@@ -57,17 +59,17 @@ public class HandFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_hand, container, false);
-        mViewPager = (ViewPager) root.findViewById(R.id.pager);
-        mAdapter = new HandFragmentPagerAdapter((this.getActivity()).getSupportFragmentManager(), mCards);
-        mViewPager.setAdapter(mAdapter);
         Log.i(TAG, "onCreateView for Cards " + mCards.toString());
-        // Old Custom ViewPager way:
-        //mAdapter = new CardPagerAdapter(getActivity().getApplicationContext(), mViewPager, mCards);
-
-
         return root;
+    }
+
+    @Override
+    public void onActivityCreated (Bundle savedInstanceState){
+        super.onActivityCreated(savedInstanceState);
+        mViewPager = (ViewPager) getView().findViewById(R.id.pager);
+        mAdapter = new HandFragmentPagerAdapter(this.getChildFragmentManager(), mCards);
+        mViewPager.setAdapter(mAdapter);
     }
 
     // TODO: Rename method, update argument and hook method into UI event

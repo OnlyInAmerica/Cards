@@ -102,6 +102,8 @@ public class MainActivity extends FragmentActivity implements HandFragment.HandF
     private void navigateToDrawerSelection(int position) {
         // Create a new fragment and specify the planet to show based on position
         Fragment fragment = null;
+        Log.i(TAG, "position " + position);
+
         switch(position){
             case 0:
                 fragment = HandFragment.newInstance(mGame.getHand());
@@ -114,10 +116,13 @@ public class MainActivity extends FragmentActivity implements HandFragment.HandF
                 break;
         }
 
+
+        //fragment = InsaneFragment.newInstance("Insane position " + position);
         // Insert the fragment by replacing any existing fragment
-       FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
-                .replace(R.id.content_frame, fragment)
+                .replace(R.id.linearLayout, fragment)
+                .addToBackStack(null)
                 .commit();
 
         // Highlight the selected item, update the title, and close the drawer
